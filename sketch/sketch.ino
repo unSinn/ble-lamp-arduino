@@ -12,6 +12,7 @@
  any redistribution
 *********************************************************************/
 
+
 #include <string.h>
 #include <Arduino.h>
 #include <SPI.h>
@@ -59,7 +60,7 @@
     #define FACTORYRESET_ENABLE     1
 
     #define PIN                     5
-    #define NUMPIXELS               1
+    #define NUMPIXELS               150
 /*=========================================================================*/
 
 Adafruit_NeoPixel pixel = Adafruit_NeoPixel(NUMPIXELS, PIN);
@@ -99,6 +100,14 @@ void printHex(const uint8_t * data, const uint32_t numBytes);
 extern uint8_t packetbuffer[];
 
 
+void setAllPixel(int r, int g, int b){
+  Serial.println( F("setAllPixel") );
+  for(uint8_t i=0; i<NUMPIXELS; i++) {
+    pixel.setPixelColor(i, pixel.Color(r,g,b));
+  }
+  pixel.show();
+}
+
 /**************************************************************************/
 /*!
     @brief  Sets up the HW an the BLE module (this function is called
@@ -107,15 +116,11 @@ extern uint8_t packetbuffer[];
 /**************************************************************************/
 void setup(void)
 {
-  while (!Serial);  // required for Flora & Micro
-  delay(500);
+  //while (!Serial);  // required for Flora & Micro
+  //delay(500);
 
   // turn off neopixel
   pixel.begin(); // This initializes the NeoPixel library.
-  for(uint8_t i=0; i<NUMPIXELS; i++) {
-    pixel.setPixelColor(i, pixel.Color(0,0,0)); // off
-  }
-  pixel.show();
 
   Serial.begin(115200);
   Serial.println(F("Adafruit Bluefruit Neopixel Color Picker Example"));
@@ -151,6 +156,8 @@ void setup(void)
   Serial.println();
 
   ble.verbose(false);  // debug info is a little annoying after this point!
+
+   setAllPixel(255,212,153);
 
   /* Wait for connection */
   while (! ble.isConnected()) {
