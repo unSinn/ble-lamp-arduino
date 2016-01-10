@@ -59,11 +59,14 @@
     -----------------------------------------------------------------------*/
     #define FACTORYRESET_ENABLE     1
 
-    #define PIN                     5
+    #define PIN_1                    5
+    #define PIN_2                    6
     #define NUMPIXELS               150
+    
 /*=========================================================================*/
 
-Adafruit_NeoPixel pixel = Adafruit_NeoPixel(NUMPIXELS, PIN);
+Adafruit_NeoPixel pixel1 = Adafruit_NeoPixel(NUMPIXELS, PIN_1);
+Adafruit_NeoPixel pixel2 = Adafruit_NeoPixel(NUMPIXELS, PIN_2);
 
 // Create the bluefruit object, either software serial...uncomment these lines
 /*
@@ -103,9 +106,11 @@ extern uint8_t packetbuffer[];
 void setAllPixel(int r, int g, int b){
   Serial.println( F("setAllPixel") );
   for(uint8_t i=0; i<NUMPIXELS; i++) {
-    pixel.setPixelColor(i, pixel.Color(r,g,b));
+    pixel1.setPixelColor(i, pixel1.Color(r,g,b));
+    pixel2.setPixelColor(i, pixel2.Color(r,g,b));
   }
-  pixel.show();
+  pixel1.show();
+  pixel2.show();
 }
 
 /**************************************************************************/
@@ -120,7 +125,8 @@ void setup(void)
   //delay(500);
 
   // turn off neopixel
-  pixel.begin(); // This initializes the NeoPixel library.
+  pixel1.begin(); // This initializes the NeoPixel library.
+   pixel2.begin(); // This initializes the NeoPixel library.
 
   Serial.begin(115200);
   Serial.println(F("Adafruit Bluefruit Neopixel Color Picker Example"));
@@ -202,9 +208,11 @@ void loop(void)
     Serial.println(blue, HEX);
 
     for(uint8_t i=0; i<NUMPIXELS; i++) {
-      pixel.setPixelColor(i, pixel.Color(red,green,blue));
+      pixel1.setPixelColor(i, pixel1.Color(red,green,blue));
+      pixel2.setPixelColor(i, pixel2.Color(red,green,blue));
     }
-    pixel.show(); // This sends the updated pixel color to the hardware.
+    pixel1.show(); // This sends the updated pixel color to the hardware.
+    pixel2.show(); // This sends the updated pixel color to the hardware.
   }
 
 }
